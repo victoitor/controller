@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+  - name: add incus repository
+    deb822_repository:
+      name: incus
+      types: deb
+      uris: https://pkgs.zabbly.com/incus/stable
+      suites: bookworm
+      components: main
+      architectures: amd64
+      signed_by: https://pkgs.zabbly.com/key.asc
+    
+  - name: add opentofu repository
+    deb822_repository:
+      name: opentofu
+      types: deb
+      uris: https://packages.opentofu.org/opentofu/tofu/any
+      suites: any
+      components: main
+      architectures: amd64
+      signed_by: https://get.opentofu.org/opentofu.gpg
+    
+  - name: install
+    apt:
+      name: 
+      - incus-client
+      - tofu
+      update_cache: true
